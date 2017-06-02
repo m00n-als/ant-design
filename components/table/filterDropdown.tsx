@@ -188,9 +188,21 @@ export default class FilterMenu extends React.Component<FilterMenuProps, any> {
     const dropdownMenuClass = classNames({
       [`${dropdownPrefixCls}-menu-without-submenu`]: !this.hasSubMenu(),
     });
-    const menus = column.filterDropdown ? (
+    const customFilter = column.filterDropdown
+      ? React.Children.map(column.filterDropdown as React.ReactNode, (child: React.ReactElement<any>) => {
+          if (child && typeof child.type === 'function' && !child.props.size) {
+            return React.cloneElement(child, {
+              handleChange: this.setSelectedKeys,
+              handleConfirm: this.handleConfirm,
+              handleClear: this.handleClearFilters,
+            });
+          }
+          return child;
+        })
+      : null;
+    const menus = customFilter ? (
       <FilterDropdownMenuWrapper>
-        {column.filterDropdown}
+        {customFilter}
       </FilterDropdownMenuWrapper>
     ) : (
       <FilterDropdownMenuWrapper className={`${prefixCls}-dropdown`}>
