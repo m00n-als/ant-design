@@ -191,6 +191,20 @@ export default class FilterMenu extends React.Component<FilterMenuProps, any> {
     const menus = column.filterDropdown ? (
       <FilterDropdownMenuWrapper>
         {column.filterDropdown}
+        <div className={`${prefixCls}-dropdown-btns`}>
+          <a
+            className={`${prefixCls}-dropdown-link confirm`}
+            onClick={this.handleConfirm}
+          >
+            {locale.filterConfirm}
+          </a>
+          <a
+            className={`${prefixCls}-dropdown-link clear`}
+            onClick={this.handleClearFilters}
+          >
+            {locale.filterReset}
+          </a>
+        </div>
       </FilterDropdownMenuWrapper>
     ) : (
       <FilterDropdownMenuWrapper className={`${prefixCls}-dropdown`}>

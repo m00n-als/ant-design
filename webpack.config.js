@@ -19,7 +19,7 @@ function es3ify(webpackConfig) {
 }
 
 function addLocales(webpackConfig) {
-  let packageName = 'antd-with-locales';
+  var packageName = 'antd-with-locales';
   if (webpackConfig.entry['antd.min']) {
     packageName += '.min';
   }
