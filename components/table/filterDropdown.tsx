@@ -196,6 +196,7 @@ export default class FilterMenu extends React.Component<FilterMenuProps, any> {
               handleChange: this.setSelectedKeys,
               handleConfirm: this.handleConfirm,
               handleClear: this.handleClearFilters,
+              selectedKeys: this.state.selectedKeys,
             });
           }
           return child;
