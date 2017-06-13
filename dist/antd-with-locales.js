@@ -46333,7 +46333,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    return _react2['default'].cloneElement(child, {
 	                        handleChange: _this3.setSelectedKeys,
 	                        handleConfirm: _this3.handleConfirm,
-	                        handleClear: _this3.handleClearFilters
+	                        handleClear: _this3.handleClearFilters,
+	                        selectedKeys: _this3.state.selectedKeys
 	                    });
 	                }
 	                return child;
