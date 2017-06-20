@@ -1,12 +1,5 @@
 @import "../color/colors";
 
-// http://stackoverflow.com/a/13611748/3040605
-@font-face {
-  font-family: "Helvetica Neue For Number";
-  src: local("Helvetica Neue");
-  unicode-range: U+30-39;
-}
-
 // The prefix to use on all css classes from ant.
 @ant-prefix             : ant;
 
@@ -59,9 +52,14 @@
 @border-radius-base     : 4px;
 @border-radius-sm       : 2px;
 
+// The background colors for active and hover states for things like
+// list items or table cells.
+@item-active-bg         : @primary-1;
+@item-hover-bg          : @primary-1;
+
 // ICONFONT
 @iconfont-css-prefix    : anticon;
-@icon-url               : "https://at.alicdn.com/t/font_0qcp222wvwijm7vi";
+@icon-url               : "https://at.alicdn.com/t/font_zck90zmlh7hf47vi";
 
 // LINK
 @link-color             : @primary-color;
@@ -97,6 +95,7 @@
 // Default background color for disabled states, Collapse wrappers,
 // and several active and hover states.
 @background-color-base  : #f7f7f7;
+@background-color-active: #eee;
 
 // Disabled states
 @disabled-color         : fade(#000, 25%);
@@ -230,6 +229,7 @@
 @input-color                 : @text-color;
 @input-border-color          : @border-color-base;
 @input-bg                    : #fff;
+@input-addon-bg              : #eee;
 @input-hover-border-color    : @primary-color;
 @input-disabled-bg           : @disabled-bg;
 
@@ -252,6 +252,8 @@
 // ---
 //** Popover body background color
 @popover-bg: #fff;
+//** Popover text color
+@popover-color: @text-color;
 //** Popover maximum width
 @popover-min-width: 177px;
 //** Popover arrow width
@@ -262,6 +264,8 @@
 @popover-arrow-outer-width: (@popover-arrow-width + 1);
 //** Popover outer arrow color
 @popover-arrow-outer-color: fadeout(@border-color-base, 30%);
+//** Popover distance with trigger
+@popover-distance: @popover-arrow-width + 4;
 
 // Modal
 // --
@@ -290,10 +294,16 @@
 @table-padding-vertical: 16px;
 @table-padding-horizontal: 8px;
 
+// Tag
+// --
+@tag-default-bg: #f3f3f3;
+@tag-default-color: @text-color;
+
 // TimePicker
 // ---
 @time-picker-panel-column-width: 56px;
 @time-picker-panel-width: @time-picker-panel-column-width * 3;
+@time-picker-selected-bg: @background-color-base;
 
 // Carousel
 // ---
@@ -317,10 +327,11 @@
 @card-head-color: @heading-color;
 @card-head-background: @component-background;
 
-// Cascader
-// ---
-@cascader-active-color: @background-color-base;
-
 // Tabs
 // ---
 @tabs-card-head-background: #f9f9f9;
+
+// BackTop
+@back-top-color: #fff;
+@back-top-bg: rgba(64, 64, 64, 0.4);
+@back-top-hover-bg: rgba(64, 64, 64, 0.6);

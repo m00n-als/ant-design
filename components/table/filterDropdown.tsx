@@ -24,6 +24,7 @@ export interface FilterMenuProps {
   confirmFilter: (column: Object, selectedKeys: string[]) => any;
   prefixCls: string;
   dropdownPrefixCls: string;
+  getPopupContainer: (triggerNode?: Element) => HTMLElement;
 }
 
 export default class FilterMenu extends React.Component<FilterMenuProps, any> {
@@ -182,15 +183,27 @@ export default class FilterMenu extends React.Component<FilterMenuProps, any> {
     }) : <Icon title={locale.filterTitle} type="filter" className={dropdownSelectedClass} />;
   }
   render() {
-    const { column, locale, prefixCls, dropdownPrefixCls } = this.props;
+    const { column, locale, prefixCls, dropdownPrefixCls, getPopupContainer } = this.props;
     // default multiple selection in filter dropdown
     const multiple = ('filterMultiple' in column) ? column.filterMultiple : true;
     const dropdownMenuClass = classNames({
       [`${dropdownPrefixCls}-menu-without-submenu`]: !this.hasSubMenu(),
     });
-    const menus = column.filterDropdown ? (
+    const customFilter = column.filterDropdown
+      ? React.Children.map(column.filterDropdown as React.ReactNode, (child: React.ReactElement<any>) => {
+          if (child && typeof child.type === 'function' && !child.props.size) {
+            return React.cloneElement(child, {
+              handleChange: this.setSelectedKeys,
+              handleConfirm: this.handleConfirm,
+              handleClear: this.handleClearFilters,
+            });
+          }
+          return child;
+        })
+      : null;
+    const menus = customFilter ? (
       <FilterDropdownMenuWrapper>
-        {column.filterDropdown}
+        {customFilter}
       </FilterDropdownMenuWrapper>
     ) : (
       <FilterDropdownMenuWrapper className={`${prefixCls}-dropdown`}>
@@ -228,6 +241,7 @@ export default class FilterMenu extends React.Component<FilterMenuProps, any> {
         overlay={menus}
         visible={this.neverShown ? false : this.state.visible}
         onVisibleChange={this.onVisibleChange}
+        getPopupContainer={getPopupContainer}
       >
         {this.renderFilterIcon()}
       </Dropdown>

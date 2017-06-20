@@ -2,12 +2,12 @@ import React from 'react';
 import Notification from 'rc-notification';
 import Icon from '../icon';
 import assign from 'object-assign';
-let notificationInstance;
+const notificationInstance = {};
 let defaultDuration = 4.5;
 let defaultTop = 24;
 let defaultBottom = 24;
 let defaultPlacement = 'topRight';
-
+let defaultGetContainer;
 export type notificationPlacement = 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
 
 function getPlacementStyle(placement) {
@@ -53,7 +53,8 @@ export interface ArgsProps {
   duration?: number;
   icon?: React.ReactNode;
   placement?: notificationPlacement;
-  getContainer?: () => HTMLElement;
+  style?: string;
+  className?: string;
 }
 
 export interface ConfigProps {
@@ -61,18 +62,20 @@ export interface ConfigProps {
   bottom?: number;
   duration?: number;
   placement?: notificationPlacement;
+  getContainer?: () => HTMLElement;
 }
 
 function getNotificationInstance(prefixCls) {
-  if (notificationInstance) {
-    return notificationInstance;
+  if (notificationInstance[defaultPlacement]) {
+    return notificationInstance[defaultPlacement];
   }
-  notificationInstance = (Notification as any).newInstance({
+  notificationInstance[defaultPlacement] = (Notification as any).newInstance({
     prefixCls: prefixCls,
     className: `${prefixCls}-${defaultPlacement}`,
     style: getPlacementStyle(defaultPlacement),
+    getContainer: defaultGetContainer,
   });
-  return notificationInstance;
+  return notificationInstance[defaultPlacement];
 }
 
 function notice(args) {
@@ -81,7 +84,6 @@ function notice(args) {
 
   if (args.placement !== undefined) {
     defaultPlacement = args.placement;
-    notificationInstance = null; // delete notificationInstance for new defaultPlacement
   }
 
   let duration;
@@ -124,6 +126,7 @@ function notice(args) {
     ? <span className={`${prefixCls}-message-single-line-auto-margin`} />
     : null;
 
+  const { style, className } = args;
   getNotificationInstance(outerPrefixCls).notice({
     content: (
       <div className={iconNode ? `${prefixCls}-with-icon` : ''}>
@@ -140,7 +143,8 @@ function notice(args) {
     closable: true,
     onClose: args.onClose,
     key: args.key,
-    style: {},
+    style: assign({}, style),
+    className,
   });
 }
 
@@ -160,12 +164,12 @@ const api: {
     notice(args);
   },
   close(key) {
-    if (notificationInstance) {
-      notificationInstance.removeNotice(key);
+    if (notificationInstance[defaultPlacement]) {
+      notificationInstance[defaultPlacement].removeNotice(key);
     }
   },
   config(options: ConfigProps) {
-    const { duration, placement, bottom, top } = options;
+    const { duration, placement, bottom, top, getContainer } = options;
     if (placement !== undefined) {
       defaultPlacement = placement;
     }
@@ -175,19 +179,26 @@ const api: {
     if (top !== undefined) {
       defaultTop = top;
     }
+    if (getContainer !== undefined) {
+      defaultGetContainer = getContainer;
+    }
     // delete notificationInstance
     if (placement !== undefined || bottom !== undefined || top !== undefined) {
-      notificationInstance = null;
+      const notify = notificationInstance[defaultPlacement];
+      if (notify) {
+        notify.destroy();
+      }
+      delete notificationInstance[defaultPlacement];
     }
     if (duration !== undefined) {
       defaultDuration = duration;
     }
   },
   destroy() {
-    if (notificationInstance) {
-      notificationInstance.destroy();
-      notificationInstance = null;
-    }
+    Object.keys(notificationInstance).forEach(key => {
+      notificationInstance[key].destroy();
+      delete notificationInstance[key];
+    });
   },
 };
 

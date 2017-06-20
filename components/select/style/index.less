@@ -128,7 +128,7 @@
   }
 
   &-disabled &-selection--multiple &-selection__choice {
-    background: #e9e9e9;
+    background: @background-color-active;
     color: #aaa;
     padding-right: 10px;
     &__remove {
@@ -227,6 +227,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    text-align: left;
   }
 
   &-search__field__placeholder {
@@ -248,7 +249,7 @@
     }
 
     .@{select-prefix-cls}-search__field {
-      border: 0;
+      border-width: 0;
       font-size: 100%;
       height: 100%;
       width: 100%;
@@ -298,7 +299,8 @@
     }
 
     .@{select-prefix-cls}-selection__choice {
-      background-color: #f3f3f3;
+      color: @tag-default-color;
+      background-color: @tag-default-bg;
       border-radius: 4px;
       cursor: default;
       float: left;
@@ -460,9 +462,12 @@
       overflow: hidden;
       transition: background 0.3s ease;
 
-      &:hover,
+      &:hover {
+        background-color: @item-hover-bg;
+      }
+
       &-active {
-        background-color: @primary-1;
+        background-color: @item-active-bg;
       }
 
       &-disabled {
