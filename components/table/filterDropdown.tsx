@@ -14,7 +14,7 @@ export interface FilterMenuProps {
   selectedKeys: string[];
   column: {
     filterMultiple?: boolean,
-    filterDropdown?: React.ReactNode,
+    filterDropdown?: any,
     filters?: { text: string; value: string, children?: any[] }[],
     filterDropdownVisible?: boolean,
     onFilterDropdownVisibleChange?: (visible: boolean) => any,
@@ -189,11 +189,23 @@ export default class FilterMenu extends React.Component<FilterMenuProps, any> {
     const dropdownMenuClass = classNames({
       [`${dropdownPrefixCls}-menu-without-submenu`]: !this.hasSubMenu(),
     });
-    const customFilter = column.filterDropdown?React.cloneElement( column.filterDropdown, {
+    // const customFilter = column.filterDropdown
+    //   ? React.Children.map(column.filterDropdown as React.ReactNode, (child: React.ReactElement<any>) => {
+    //       if (child && typeof child.type === 'function' && !child.props.size) {
+    //         return React.cloneElement(child, {
+    //           handleChange: this.setSelectedKeys,
+    //           handleConfirm: this.handleConfirm,
+    //           handleClear: this.handleClearFilters,
+    //         });
+    //       }
+    //       return child;
+    //     })
+    //   : null;
+    const customFilter = column.filterDropdown ? React.cloneElement(column.filterDropdown, {
               handleChange: this.setSelectedKeys,
               handleConfirm: this.handleConfirm,
               handleClear: this.handleClearFilters,
-    }) : null;
+            }) : null;
     const menus = customFilter ? (
       <FilterDropdownMenuWrapper>
         {customFilter}
