@@ -46316,8 +46316,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var _this3 = this;
-	
 	            var _props = this.props,
 	                column = _props.column,
 	                locale = _props.locale,
@@ -46328,17 +46326,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	            var multiple = 'filterMultiple' in column ? column.filterMultiple : true;
 	            var dropdownMenuClass = (0, _classnames2['default'])((0, _defineProperty3['default'])({}, dropdownPrefixCls + '-menu-without-submenu', !this.hasSubMenu()));
-	            var customFilter = column.filterDropdown ? _react2['default'].Children.map(column.filterDropdown, function (child) {
-	                if (child && typeof child.type === 'function' && !child.props.size) {
-	                    return _react2['default'].cloneElement(child, {
-	                        handleChange: _this3.setSelectedKeys,
-	                        handleConfirm: _this3.handleConfirm,
-	                        handleClear: _this3.handleClearFilters,
-	                        selectedKeys: _this3.state.selectedKeys
-	                    });
-	                }
-	                return child;
-	            }) : null;
+	            var customFilter = column.filterDropdown ? _react2['default'].createElement('div', null) : null;
 	            var menus = customFilter ? _react2['default'].createElement(
 	                _FilterDropdownMenuWrapper2['default'],
 	                null,
